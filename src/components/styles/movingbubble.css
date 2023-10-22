@@ -1,0 +1,21 @@
+.moving-bubble {
+  animation: moveBubble 80s linear infinite;
+}
+
+@keyframes moveBubble {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(100%, 0);
+  }
+  50% {
+    transform: translate(0, 1000px);
+  }
+  75% {
+    transform: translate(-1000px, -1000px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
