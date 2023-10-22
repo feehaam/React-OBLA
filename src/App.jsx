@@ -6,12 +6,13 @@ import "../src/components/styles/app.css";
 import MovingBubble from "./components/movingbubble";
 import Home from "./components/home";
 import LoginPage from "./components/loginpage";
+import ConsolePanel from "./components/consolepanel";
 
 function App() {
   return (
     <>
       <NavigationBar />
-
+      <ConsolePanel />
       <LoginPage />
       <div className="background-container">
         <div className="body-container">
