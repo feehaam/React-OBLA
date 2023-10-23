@@ -1,6 +1,7 @@
 const Home = () => {
   return (
     <>
+      Hello from homepage <br></br>
       Hello 1<br></br>
       Hello 2<br></br>
       Hello 3<br></br>

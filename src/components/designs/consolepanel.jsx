@@ -1,4 +1,4 @@
-import "./styles/console.css";
+import "../styles/console.css";
 import React, { useState } from "react";
 
 const ConsolePanel = () => {
