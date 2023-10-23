@@ -1,6 +1,7 @@
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../components/styles/common.css";
+import { isAdmin, isCustomer, isLogged } from "../account/account.info";
 
 const NavigationBar = () => {
   return (
@@ -12,16 +13,21 @@ const NavigationBar = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/">🏠 Home</Nav.Link>
-              <Nav.Link href="/login">✅ Login</Nav.Link>
-              <Nav.Link href="/register">📝 Register</Nav.Link>
-              <Nav.Link href="/profile">🧑 Profile </Nav.Link>
-              <Nav.Link href="/members">👫 Members</Nav.Link>
-              <Nav.Link href="/books">📚 Books</Nav.Link>
-              <Nav.Link href="/books-manage">📚 Books</Nav.Link>
-              <Nav.Link href="/borrows">📆Borrows</Nav.Link>
-              <Nav.Link href="/reservations">⌛Reservations</Nav.Link>
-              <Nav.Link href="/logout">⭕ Logout</Nav.Link>
+              {isLogged() && <Nav.Link href="/">🏠 Home</Nav.Link>}
+              {!isLogged() && (
+                <>
+                  <Nav.Link href="/login">✅ Login</Nav.Link>
+                  <Nav.Link href="/register">📝 Register</Nav.Link>
+                </>
+              )}
+              {isLogged() && <Nav.Link href="/profile">🧑 Profile </Nav.Link>}
+              {isCustomer() && <Nav.Link href="/books">📚 Books</Nav.Link>}
+              {isAdmin() && <Nav.Link href="/books-manage">📚 Books</Nav.Link>}
+              {isCustomer() && <Nav.Link href="/borrows">📆Borrows</Nav.Link>}
+              {isCustomer() && (
+                <Nav.Link href="/reservations">⌛Reservations</Nav.Link>
+              )}
+              {isLogged() && <Nav.Link href="/logout">⭕ Logout</Nav.Link>}
             </Nav>
           </Navbar.Collapse>
         </Navbar>

@@ -14,23 +14,59 @@ import { Books } from "./components/books/books";
 import { ManageBooks } from "./components/books/books.manage";
 import { Borrows } from "./components/orders/borrow";
 import { Reservations } from "./components/orders/reservations";
+import { Authenticate } from "./components/account/authenticate";
+import { useState } from "react";
+import { Logout } from "./components/account/logout";
 
 function App() {
+  const [notification, setNotification] = useState([]);
+  const x = 10;
+
+  const notify = (message, type) => {
+    console.log("Creating new notification: " + message + " (" + type + ")");
+    const notifyItem = {
+      message: message,
+      type: type,
+    };
+
+    setNotification([...notification, notifyItem]);
+  };
+
   return (
     <>
       <Router>
         <NavigationBar />
-        <ConsolePanel />
+        <ConsolePanel notification={notification} />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/books-manage" element={<ManageBooks />} />
-          <Route path="/borrows" element={<Borrows />} />
-          <Route path="/reservations" element={<Reservations />} />
+          {/* Public routes */}
+          <Route path="/login" element={<LoginPage notify={notify} />} />
+          <Route path="/register" element={<Register notify={notify} />} />
+
+          {/* Authenticated routes */}
+          <Route
+            element={<Authenticate requiredRole={"ANY"} notify={notify} />}
+          >
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/logout" element={<Logout notify={notify} />} />
+          </Route>
+
+          {/* Customer-only routes */}
+          <Route
+            element={<Authenticate requiredRole={"CUSTOMER"} notify={notify} />}
+          >
+            <Route path="/books" element={<Books />} />
+            <Route path="/borrows" element={<Borrows />} />
+            <Route path="/reservations" element={<Reservations />} />
+          </Route>
+
+          {/* Admin only routes */}
+          <Route
+            element={<Authenticate requiredRole={"ADMIN"} notify={notify} />}
+          >
+            <Route path="/members" element={<Members />} />
+            <Route path="/books-manage" element={<ManageBooks />} />
+          </Route>
         </Routes>
         <div className="background-container">
           <div className="body-container">
@@ -44,7 +80,6 @@ function App() {
               <FirstSVG />
             </div>
           </div>
-
           <Footer />
         </div>
       </Router>
