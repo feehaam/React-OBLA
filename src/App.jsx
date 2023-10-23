@@ -47,7 +47,7 @@ function App() {
             element={<Authenticate requiredRole={"ANY"} notify={notify} />}
           >
             <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<Profile notify={notify} />} />
             <Route path="/logout" element={<Logout notify={notify} />} />
           </Route>
 
