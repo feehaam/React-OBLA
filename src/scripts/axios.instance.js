@@ -5,6 +5,7 @@ export const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
+  console.log("Calling api");
   const token = localStorage.getItem("token");
 
   if (token) {
@@ -13,5 +14,17 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    console.log("Api call done"); 
+    return response;
+  },
+  (error) => {
+    console.error("Error:", error); 
+    console.log("Api call done with error"); 
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;

@@ -7,6 +7,7 @@ export const ManageBooks = ({ notify }) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
+    notify("", "startLoading");
     axiosInstance
       .get("/books/all")
       .then((response) => {
@@ -16,9 +17,11 @@ export const ManageBooks = ({ notify }) => {
       .catch((error) => {
         notify("Failed to load the books, come back later.", "");
       });
+    notify("", "endLoading");
   }, []);
 
   const handleDeleteBook = (bookId, deleted) => {
+    notify("", "startLoading");
     if (deleted === "Yes") {
       notify("Book is already archived.", "danger");
     } else {
@@ -39,6 +42,7 @@ export const ManageBooks = ({ notify }) => {
           console.error("Error archiving book:", error);
           notify("Failed to archive the book.", "danger");
         });
+      notify("", "endLoading");
     }
   };
 

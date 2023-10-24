@@ -31,10 +31,14 @@ const LoginPage = ({ notify }) => {
       password: password,
     };
 
+    notify("", "startLoading");
     axiosInstance
       .post("/user/login", credentials)
       .then((result) => {
+        notify("", "endLoading");
+        notify("", "endLoading");
         if (result.status === 200) {
+          notify("", "startLoading");
           console.log("Login successful!");
           const token = result.data.bearerToken;
           const role = result.data.roles[0].replace("ROLE_", "");
@@ -47,11 +51,13 @@ const LoginPage = ({ notify }) => {
           notify("Login successful. Welcome to the library!", "success");
           navigate("/");
         } else {
+          notify("", "endLoading");
           console.log("Login failed...");
           notify(result.data.message, "danger");
         }
       })
       .catch((error) => {
+        notify("", "endLoading");
         notify(error.response.data.message, "danger");
       });
   };

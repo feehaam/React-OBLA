@@ -8,15 +8,18 @@ export const Profile = ({ notify }) => {
   const userEmail = localStorage.getItem("email");
 
   useEffect(() => {
+    notify("", "startLoading");
     if (userEmail) {
       axiosInstance
         .get(`/users/profile?email=${userEmail}`)
         .then((response) => {
+          notify("", "endLoading");
           setUser(response.data);
           setEditedUser(response.data);
           console.log(response.data);
         })
         .catch((error) => {
+          notify("", "endLoading");
           console.log(error);
         });
     }
@@ -27,6 +30,7 @@ export const Profile = ({ notify }) => {
   };
 
   const handleSave = () => {
+    notify("", "startLoading");
     const updatedUserData = {
       userId: user.userId,
       firstName: editedUser.firstName,
@@ -39,10 +43,12 @@ export const Profile = ({ notify }) => {
         notify("Your profile info is updated.", "success");
         setUser(editedUser);
         setIsEditing(false);
+        notify("", "endLoading");
       })
       .catch((error) => {
         notify("Failed to update profile info.", "danger");
         console.error("Error updating user:", error);
+        notify("", "endLoading");
       });
   };
 
@@ -128,9 +134,7 @@ export const Profile = ({ notify }) => {
           </div>
         </div>
       ) : (
-        <p>
-          <img src="/images/bookgif2.gif" />
-        </p>
+        ""
       )}
     </div>
   );

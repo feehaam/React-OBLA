@@ -9,8 +9,10 @@ export const Borrows = ({ notify }) => {
   const [empty, setEmpty] = useState(false);
 
   useEffect(() => {
+    notify("", "startLoading");
     if (userId) {
       axiosInstance.get(`/users/${userId}/history`).then((response) => {
+        notify("", "endLoading");
         setBorrows(response.data);
         if (borrows.length === 0) {
           setEmpty(true);
@@ -20,9 +22,11 @@ export const Borrows = ({ notify }) => {
   }, [userId]);
 
   const handleReturn = (bookId) => {
+    notify("", "startLoading");
     axiosInstance
       .post(`/books/${bookId}/return`)
       .then(() => {
+        notify("", "endLoading");
         notify("Book returned successfully.", "success");
         axiosInstance.get(`/users/${userId}/history`).then((response) => {
           setBorrows(response.data);
@@ -32,6 +36,7 @@ export const Borrows = ({ notify }) => {
         });
       })
       .catch((error) => {
+        notify("", "endLoading");
         console.error("Error returning the book:", error);
         notify("Error returning the book, try again later.", "danger");
       });

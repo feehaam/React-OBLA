@@ -1,18 +1,16 @@
-.background-container {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    z-index: -1;
-
-    margin: 0;
-    padding: 0;
+.flex-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.body-container{
+.background-container {
     flex: 1;
+    /* Take up all available vertical space */
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    z-index: -1;
 }
 
 .svg-background {
@@ -23,3 +21,5 @@
     height: 100%;
     z-index: -1;
 }
+
+/* Other styles for Footer, NavigationBar, etc. */

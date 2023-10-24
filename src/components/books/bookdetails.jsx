@@ -22,21 +22,26 @@ export const BookDetails = ({ notify }) => {
   }, [bookId]);
 
   function loadBook() {
+    notify("", "startLoading");
     axiosInstance
       .get(`/books/${bookId}`)
       .then((response) => {
         setBook(response.data);
         console.log("Book details:", response.data);
+        notify("", "endLoading");
       })
       .catch((error) => {
         console.error("Error fetching book details:", error);
+        notify("", "endLoading");
       });
   }
 
   function loadReviews() {
+    notify("", "startLoading");
     axiosInstance
       .get(`/books/${bookId}/reviews`)
       .then((response) => {
+        notify("", "endLoading");
         setReviews(response.data);
         console.log("Reviews:", response.data);
         if (response.data.length === 0) setEmpty(true);
@@ -58,14 +63,17 @@ export const BookDetails = ({ notify }) => {
         else setTotalRating(totalRating / reviews.length); // Calculate average rating here
       })
       .catch((error) => {
+        notify("", "endLoading");
         console.error("Error fetching reviews:", error);
       });
   }
 
   const postReview = () => {
+    notify("", "startLoading");
     axiosInstance
       .post(`/books/${bookId}/reviews/create`, newReview)
       .then((response) => {
+        notify("", "endLoading");
         setReviews([...reviews, response.data]);
         console.log("Review created:", response.data);
         notify("Review posted.", "success");
@@ -77,15 +85,18 @@ export const BookDetails = ({ notify }) => {
         loadReviews();
       })
       .catch((error) => {
+        notify("", "endLoading");
         console.error("Error creating review:", error);
         notify("Failed to post review.", "danger");
       });
   };
 
   const putReview = () => {
+    notify("", "startLoading");
     axiosInstance
       .put(`/books/${bookId}/reviews/${updateRID}/update`, newReview)
       .then((response) => {
+        notify("", "endLoading");
         setReviews([...reviews, response.data]);
         console.log("Review created:", response.data);
         setNewReview({
@@ -96,15 +107,18 @@ export const BookDetails = ({ notify }) => {
         loadReviews();
       })
       .catch((error) => {
+        notify("", "endLoading");
         notify("Failed to update review.", "danger");
         console.error("Error creating review:", error);
       });
   };
 
   const deleteReview = (reviewId) => {
+    notify("", "startLoading");
     axiosInstance
       .delete(`/books/${bookId}/reviews/${reviewId}/delete`)
       .then((response) => {
+        notify("", "endLoading");
         console.log(response);
         setReviews(reviews.filter((review) => review.reviewId !== reviewId));
         if (reviews.length === 0) setEmpty(true);
@@ -112,6 +126,7 @@ export const BookDetails = ({ notify }) => {
         notify("Review deleted.", "success");
       })
       .catch((error) => {
+        notify("", "endLoading");
         notify("Failed to delete review.", "danger");
         console.error("Error deleting review:", error);
       });
@@ -147,15 +162,18 @@ export const BookDetails = ({ notify }) => {
   };
 
   const handleReserve = () => {
+    notify("", "startLoading");
     axiosInstance
       .post(`/books/${bookId}/reserve`)
       .then((response) => {
         console.log("Reserve request successful:", response);
         notify("Book reserved.", "success");
+        notify("", "endLoading");
       })
       .catch((error) => {
         notify("Failed to reserve book.", "danger");
         console.error("Error reserving the book:", error);
+        notify("", "endLoading");
       });
   };
 

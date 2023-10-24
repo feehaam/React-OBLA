@@ -3,17 +3,20 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../../scripts/axios.instance";
 import "../styles/book.css";
 
-export const Home = () => {
+export const Home = ({ notify }) => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
+    notify("", "startLoading");
     axiosInstance
       .get("/books/all")
       .then((response) => {
         setBooks(response.data);
         console.log(response.data);
+        notify("", "endLoading");
       })
       .catch((error) => {
+        notify("", "endLoading");
         console.error("Error fetching books:", error);
       });
   }, []);

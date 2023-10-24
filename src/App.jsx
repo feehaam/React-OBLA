@@ -22,9 +22,20 @@ import BookDetails from "./components/books/bookdetails";
 
 function App() {
   const [notification, setNotification] = useState([]);
+  const [loading, setLoading] = useState(false);
   const x = 10;
 
   const notify = (message, type) => {
+    if (type === "startLoading") {
+      console.log("starting loading...");
+      setLoading(true);
+      return;
+    }
+    if (type === "endLoading") {
+      console.log("ending loading...");
+      setLoading(false);
+      return;
+    }
     console.log("Creating new notification: " + message + " (" + type + ")");
     const notifyItem = {
       message: message,
@@ -38,57 +49,63 @@ function App() {
     <>
       <Router>
         <NavigationBar />
-        <ConsolePanel notification={notification} />
-        <Routes>
-          {/* Public routes */}
-          <Route path="/login" element={<LoginPage notify={notify} />} />
-          <Route path="/register" element={<Register notify={notify} />} />
+        <ConsolePanel
+          notification={notification}
+          loading={loading}
+          setLoading={setLoading}
+        />
+        <div className="flex-container">
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<LoginPage notify={notify} />} />
+            <Route path="/register" element={<Register notify={notify} />} />
 
-          {/* Authenticated routes */}
-          <Route
-            element={<Authenticate requiredRole={"ANY"} notify={notify} />}
-          >
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile notify={notify} />} />
-            <Route path="/logout" element={<Logout notify={notify} />} />
+            {/* Authenticated routes */}
             <Route
-              path="/borrows/:userId"
-              element={<Borrows notify={notify} />}
-            />
-            <Route
-              path="/books/:bookId"
-              element={<BookDetails notify={notify} />}
-            />
-          </Route>
+              element={<Authenticate requiredRole={"ANY"} notify={notify} />}
+            >
+              <Route path="/" element={<Home notify={notify} />} />
+              <Route path="/profile" element={<Profile notify={notify} />} />
+              <Route path="/logout" element={<Logout notify={notify} />} />
+              <Route
+                path="/borrows/:userId"
+                element={<Borrows notify={notify} />}
+              />
+              <Route
+                path="/books/:bookId"
+                element={<BookDetails notify={notify} />}
+              />
+            </Route>
 
-          {/* Customer-only routes */}
-          <Route
-            element={<Authenticate requiredRole={"CUSTOMER"} notify={notify} />}
-          >
-            <Route path="/books" element={<Books />} />
+            {/* Customer-only routes */}
             <Route
-              path="/reservations"
-              element={<Reservations notify={notify} />}
-            />
-          </Route>
+              element={
+                <Authenticate requiredRole={"CUSTOMER"} notify={notify} />
+              }
+            >
+              <Route path="/books" element={<Books notify={notify} />} />
+              <Route
+                path="/reservations"
+                element={<Reservations notify={notify} />}
+              />
+            </Route>
 
-          {/* Admin only routes */}
-          <Route
-            element={<Authenticate requiredRole={"ADMIN"} notify={notify} />}
-          >
-            <Route path="/members" element={<Members />} />
+            {/* Admin only routes */}
             <Route
-              path="/books-manage"
-              element={<ManageBooks notify={notify} />}
-            />
-            <Route
-              path="/edit-book/:bookId"
-              element={<EditBook notify={notify} />}
-            />
-          </Route>
-        </Routes>
-        <div className="background-container">
-          <div className="body-container">
+              element={<Authenticate requiredRole={"ADMIN"} notify={notify} />}
+            >
+              <Route path="/members" element={<Members />} />
+              <Route
+                path="/books-manage"
+                element={<ManageBooks notify={notify} />}
+              />
+              <Route
+                path="/edit-book/:bookId"
+                element={<EditBook notify={notify} />}
+              />
+            </Route>
+          </Routes>
+          <div className="background-container">
             <div className="svg-background">
               <MovingBubble />
             </div>
@@ -99,11 +116,42 @@ function App() {
               <FirstSVG />
             </div>
           </div>
-          <Footer />
         </div>
+        <div
+          className="loading-overlay"
+          style={{
+            display: loading ? "block" : "none",
+            position: "fixed",
+            top: "100px",
+            left: "100px",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            className="loading-content"
+            style={{
+              textAlign: "center",
+              border: "1px solid #ccc",
+              borderRadius: "50%",
+              padding: "10px",
+              backgroundColor: "rgba(0,0,0,0.2)",
+              boxShadow: "2px 2px 5px",
+              maxWidth: "60%",
+            }}
+          >
+            <img
+              style={{ maxWidth: "100%" }}
+              src="/images/bookgif2.gif"
+              alt="Loading"
+              className="loading-gif"
+            />
+            <h3>Loading...</h3>
+          </div>
+        </div>
+        <Footer />
       </Router>
     </>
   );
 }
 
-export default App;
+export { App };

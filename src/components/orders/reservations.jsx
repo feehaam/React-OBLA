@@ -8,16 +8,19 @@ export const Reservations = ({ notify }) => {
 
   useEffect(() => {
     // Fetch reservations data from the API
+    notify("", "startLoading");
     axiosInstance.get("/reserves").then((response) => {
       console.log(response);
       setReservations(response.data);
       if (response.data.length === 0) {
         setEmpty(true);
       }
+      notify("", "endLoading");
     });
   }, []);
 
   const handleCancelReservation = (bookId) => {
+    notify("", "startLoading");
     axiosInstance
       .post(`/books/${bookId}/cancel-reservation`)
       .then((response) => {
@@ -27,13 +30,16 @@ export const Reservations = ({ notify }) => {
           );
           setReservations(updatedReservations);
           notify("Reservation canceled successfully", "success");
+          notify("", "endLoading");
         } else {
           notify("Failed to cancel reservation. Please try again.", "danger");
+          notify("", "endLoading");
         }
       })
       .catch((error) => {
         console.log(error);
         notify("Failed to cancel reservation. Please try again.", "danger");
+        notify("", "endLoading");
       });
   };
 

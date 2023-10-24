@@ -44,9 +44,11 @@ export const Register = ({ notify }) => {
         ? "/user/register/admin?permissionToken=12345"
         : "/user/register";
 
+    notify("", "startLoading");
     axiosInstance
       .post(apiUrl, userData)
       .then((result) => {
+        notify("", "endLoading");
         if (result.status === 201) {
           notify(result.data + ". Log in to your account.", "success");
           // Delay for 3 seconds before navigating to login
@@ -60,6 +62,7 @@ export const Register = ({ notify }) => {
         }
       })
       .catch((error) => {
+        notify("", "endLoading");
         console.log("Error ");
         console.log(error);
         notify(error.response.data.cause, "danger");

@@ -8,9 +8,11 @@ export const Members = () => {
   const [usersPerPage] = useState(10);
 
   useEffect(() => {
+    notify("", "startLoading");
     axiosInstance.get("/user/all").then((response) => {
       setUsers(response.data);
     });
+    notify("", "endLoading");
   }, []);
 
   // Calculate the indexes of the users to display on the current page

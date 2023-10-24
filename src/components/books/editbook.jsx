@@ -16,6 +16,7 @@ const EditBook = ({ notify }) => {
   const { bookId } = useParams();
 
   useEffect(() => {
+    notify("", "startLoading");
     const api = `/books/${bookId}`;
     console.log("api is: " + api);
     if (bookId === null || bookId === undefined || bookId === "0") {
@@ -39,6 +40,7 @@ const EditBook = ({ notify }) => {
           notify(`The book with ID ${bookId} is was not found.`, "danger");
         });
     }
+    notify("", "endLoading");
   }, [bookId]);
 
   const handleInputChange = (e) => {
@@ -47,6 +49,7 @@ const EditBook = ({ notify }) => {
   };
 
   const handleSubmit = () => {
+    notify("", "startLoading");
     if (isCreateMode) {
       axiosInstance
         .post("/books/create", bookData)
@@ -76,6 +79,7 @@ const EditBook = ({ notify }) => {
           notify("Failed to update book, try again later. ", "dagner");
         });
     }
+    notify("", "endLoading");
   };
 
   return (
