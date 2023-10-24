@@ -94,7 +94,7 @@ function App() {
             <Route
               element={<Authenticate requiredRole={"ADMIN"} notify={notify} />}
             >
-              <Route path="/members" element={<Members />} />
+              <Route path="/members" element={<Members notify={notify} />} />
               <Route
                 path="/books-manage"
                 element={<ManageBooks notify={notify} />}

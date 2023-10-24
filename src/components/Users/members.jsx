@@ -2,17 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Container, Table, Button } from "react-bootstrap";
 import axiosInstance from "../../scripts/axios.instance";
 
-export const Members = () => {
+export const Members = ({ notify }) => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
 
   useEffect(() => {
     notify("", "startLoading");
-    axiosInstance.get("/user/all").then((response) => {
-      setUsers(response.data);
-    });
-    notify("", "endLoading");
+    axiosInstance
+      .get("/user/all")
+      .then((response) => {
+        notify("", "endLoading");
+        setUsers(response.data);
+      })
+      .catch((error) => {
+        notify("", "endLoading");
+      });
   }, []);
 
   // Calculate the indexes of the users to display on the current page

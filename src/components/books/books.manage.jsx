@@ -11,13 +11,14 @@ export const ManageBooks = ({ notify }) => {
     axiosInstance
       .get("/books/all")
       .then((response) => {
+        notify("", "endLoading");
         setBooks(response.data);
         console.log(response.data);
       })
       .catch((error) => {
+        notify("", "endLoading");
         notify("Failed to load the books, come back later.", "");
       });
-    notify("", "endLoading");
   }, []);
 
   const handleDeleteBook = (bookId, deleted) => {
@@ -28,6 +29,7 @@ export const ManageBooks = ({ notify }) => {
       axiosInstance
         .delete("/books/" + bookId + "/delete")
         .then(() => {
+          notify("", "endLoading");
           setBooks((prevBooks) =>
             prevBooks.map((book) => {
               if (book.bookId === bookId) {
@@ -41,8 +43,8 @@ export const ManageBooks = ({ notify }) => {
         .catch((error) => {
           console.error("Error archiving book:", error);
           notify("Failed to archive the book.", "danger");
+          notify("", "endLoading");
         });
-      notify("", "endLoading");
     }
   };
 
