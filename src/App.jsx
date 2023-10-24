@@ -17,6 +17,8 @@ import { Reservations } from "./components/orders/reservations";
 import { Authenticate } from "./components/account/authenticate";
 import { useState } from "react";
 import { Logout } from "./components/account/logout";
+import EditBook from "./components/books/editbook";
+import BookDetails from "./components/books/bookdetails";
 
 function App() {
   const [notification, setNotification] = useState([]);
@@ -49,6 +51,14 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile notify={notify} />} />
             <Route path="/logout" element={<Logout notify={notify} />} />
+            <Route
+              path="/borrows/:userId"
+              element={<Borrows notify={notify} />}
+            />
+            <Route
+              path="/books/:bookId"
+              element={<BookDetails notify={notify} />}
+            />
           </Route>
 
           {/* Customer-only routes */}
@@ -56,8 +66,10 @@ function App() {
             element={<Authenticate requiredRole={"CUSTOMER"} notify={notify} />}
           >
             <Route path="/books" element={<Books />} />
-            <Route path="/borrows" element={<Borrows />} />
-            <Route path="/reservations" element={<Reservations />} />
+            <Route
+              path="/reservations"
+              element={<Reservations notify={notify} />}
+            />
           </Route>
 
           {/* Admin only routes */}
@@ -65,7 +77,14 @@ function App() {
             element={<Authenticate requiredRole={"ADMIN"} notify={notify} />}
           >
             <Route path="/members" element={<Members />} />
-            <Route path="/books-manage" element={<ManageBooks />} />
+            <Route
+              path="/books-manage"
+              element={<ManageBooks notify={notify} />}
+            />
+            <Route
+              path="/edit-book/:bookId"
+              element={<EditBook notify={notify} />}
+            />
           </Route>
         </Routes>
         <div className="background-container">

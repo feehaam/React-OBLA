@@ -1,110 +1,68 @@
-const Home = () => {
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axiosInstance from "../../scripts/axios.instance";
+import "../styles/book.css";
+
+export const Home = () => {
+  const [books, setBooks] = useState([]);
+
+  useEffect(() => {
+    axiosInstance
+      .get("/books/all")
+      .then((response) => {
+        setBooks(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching books:", error);
+      });
+  }, []);
+
   return (
-    <>
-      Hello from homepage <br></br>
-      Hello 1<br></br>
-      Hello 2<br></br>
-      Hello 3<br></br>
-      Hello 4<br></br>
-      Hello 5<br></br>
-      Hello 6<br></br>
-      Hello 7<br></br>
-      Hello 8<br></br>
-      Hello 9<br></br>
-      Hello 10<br></br>
-      Hello 11<br></br>
-      Hello 12<br></br>
-      Hello 13<br></br>
-      Hello 14<br></br>
-      Hello 15<br></br>
-      Hello 16<br></br>
-      Hello 17<br></br>
-      Hello 18<br></br>
-      Hello 19<br></br>
-      Hello 20<br></br>
-      Hello 21<br></br>
-      Hello 22<br></br>
-      Hello 23<br></br>
-      Hello 24<br></br>
-      Hello 25<br></br>
-      Hello 26<br></br>
-      Hello 27<br></br>
-      Hello 28<br></br>
-      Hello 29<br></br>
-      Hello 30<br></br>
-      Hello 31<br></br>
-      Hello 32<br></br>
-      Hello 33<br></br>
-      Hello 34<br></br>
-      Hello 35<br></br>
-      Hello 36<br></br>
-      Hello 37<br></br>
-      Hello 38<br></br>
-      Hello 39<br></br>
-      Hello 40<br></br>
-      Hello 41<br></br>
-      Hello 42<br></br>
-      Hello 43<br></br>
-      Hello 44<br></br>
-      Hello 45<br></br>
-      Hello 46<br></br>
-      Hello 47<br></br>
-      Hello 48<br></br>
-      Hello 49<br></br>
-      Hello 50<br></br>
-      Hello 51<br></br>
-      Hello 52<br></br>
-      Hello 53<br></br>
-      Hello 54<br></br>
-      Hello 55<br></br>
-      Hello 56<br></br>
-      Hello 57<br></br>
-      Hello 58<br></br>
-      Hello 59<br></br>
-      Hello 60<br></br>
-      Hello 61<br></br>
-      Hello 62<br></br>
-      Hello 63<br></br>
-      Hello 64<br></br>
-      Hello 65<br></br>
-      Hello 66<br></br>
-      Hello 67<br></br>
-      Hello 68<br></br>
-      Hello 69<br></br>
-      Hello 70<br></br>
-      Hello 71<br></br>
-      Hello 72<br></br>
-      Hello 73<br></br>
-      Hello 74<br></br>
-      Hello 75<br></br>
-      Hello 76<br></br>
-      Hello 77<br></br>
-      Hello 78<br></br>
-      Hello 79<br></br>
-      Hello 80<br></br>
-      Hello 81<br></br>
-      Hello 82<br></br>
-      Hello 83<br></br>
-      Hello 84<br></br>
-      Hello 85<br></br>
-      Hello 86<br></br>
-      Hello 87<br></br>
-      Hello 88<br></br>
-      Hello 89<br></br>
-      Hello 90<br></br>
-      Hello 91<br></br>
-      Hello 92<br></br>
-      Hello 93<br></br>
-      Hello 94<br></br>
-      Hello 95<br></br>
-      Hello 96<br></br>
-      Hello 97<br></br>
-      Hello 98<br></br>
-      Hello 99<br></br>
-      Hello 100<br></br>
-      Hello 101<br></br>
-      Hello 102<br></br>
-    </>
+    <div className="container mt-4">
+      <br></br>
+      <div className="row">
+        {books.map((book) => (
+          <div key={book.bookId} className="col-lg-4 col-md-6 mb-4">
+            <Link
+              to={`/books/${book.bookId}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <div className="card cardcont">
+                <img
+                  src={book.imgUrl}
+                  className="card-img-top cover"
+                  alt={book.title}
+                />
+                <div className="card-body description">
+                  <h5 className="card-title" style={{ color: "#a00043" }}>
+                    {book.title}
+                  </h5>
+                  <hr></hr>
+                  <p className="card-text">
+                    {book.description.length > 70
+                      ? `${book.description.slice(0, 70)}...`
+                      : book.description}
+                  </p>
+                  <p
+                    className="card-text text-muted"
+                    style={{ color: "#a00043" }}
+                  >
+                    <strong>Author:</strong> {book.author}
+                  </p>
+                  <p
+                    className="card-text text-muted"
+                    style={{ color: "#a00043" }}
+                  >
+                    <strong>Status:</strong> {book.status}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

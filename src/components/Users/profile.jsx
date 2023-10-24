@@ -52,9 +52,19 @@ export const Profile = ({ notify }) => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-4 d-flex justify-content-center align-items-center">
       {user ? (
-        <div className="card">
+        <div
+          style={{
+            border: "1px solid #ccc",
+            borderRadius: "5px",
+            padding: "15px",
+            width: "75%",
+            maxWidth: "700px",
+            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+          }}
+        >
           <div className="card-body">
             <h5 className="card-title">Profile Information</h5>
             <hr></hr>
@@ -118,7 +128,9 @@ export const Profile = ({ notify }) => {
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>
+          <img src="/images/bookgif2.gif" />
+        </p>
       )}
     </div>
   );

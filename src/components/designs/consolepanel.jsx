@@ -15,16 +15,19 @@ const ConsolePanel = ({ notification }) => {
       setVisible(true);
 
       // Calculate the duration based on the message length
-      const totalMessageLength = notification.reduce(
-        (acc, item) => acc + item.message.length,
-        0
-      );
 
-      let duration = 1000; // Default duration in milliseconds
+      // const totalMessageLength = notifications[notifications.length - 1].length;
 
-      if (totalMessageLength > 50 && totalMessageLength < 60) {
-        duration = 5000; // Change duration for longer messages
-      }
+      let duration = 3000; // Default duration in milliseconds
+
+      // duration = duration + totalMessageLength * 100;
+
+      // console.log(
+      //   "message length: " +
+      //     totalMessageLength +
+      //     " Notification duration: " +
+      //     duration
+      // );
 
       // Hide the panel after the calculated duration
       setTimeout(() => {
